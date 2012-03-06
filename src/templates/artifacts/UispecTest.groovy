@@ -3,7 +3,8 @@ import griffon.uispec4j.GriffonUISpecTestCase
 
 class @artifact.name@ extends GriffonUISpecTestCase {
     void testSomething() {
-        // Window window = getMainWindow() 
+        // Window window = getMainWindow()
+        fail("Not yet implemented!")
     }
  
     // protected void onSetUp() {

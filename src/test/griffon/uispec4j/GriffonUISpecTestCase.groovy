@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2011-2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import java.util.concurrent.CountDownLatch
 import griffon.swing.SwingGriffonApplication
 import griffon.test.*
 import griffon.core.UIThreadManager
-import org.codehaus.griffon.commons.ConfigurationHolder
 
 /**
  * @author Andres Almiray
@@ -79,11 +78,9 @@ abstract class GriffonUISpecTestCase extends UISpecTestCase {
     // from GriffonUnitTestCase
 
     private Map savedMetaClasses
-    private previousConfig
 
     private void setUpTestCase() {
         savedMetaClasses = [:]
-        previousConfig = ConfigurationHolder.config
     }
 
     private void tearDownTestCase() {
@@ -92,8 +89,6 @@ abstract class GriffonUISpecTestCase extends UISpecTestCase {
             GroovySystem.metaClassRegistry.removeMetaClass(clazz) 
             GroovySystem.metaClassRegistry.setMetaClass(clazz, metaClass)
         }
-
-        ConfigurationHolder.config = previousConfig
     }
 
     /**
@@ -128,16 +123,12 @@ abstract class GriffonUISpecTestCase extends UISpecTestCase {
         return new GriffonMock(clazz, loose)
     }
 
-    protected void mockConfig(String config) {
-        ConfigurationHolder.config = new ConfigSlurper().parse(config)
-    }
-
     /** Executes code synchronously inside the UI thread */
-    def execSync = UIThreadManager.instance.&executeSync
+    def execInsideUISync = UIThreadManager.instance.&executeSync
     /** Executes code asynchronously inside the UI thread */
-    def execAsync = UIThreadManager.instance.&executeAsync
+    def execInsideUIAsync = UIThreadManager.instance.&executeAsync
     /** Executes code outside the UI thread */
-    def execOutside = UIThreadManager.instance.&executeOutside
+    def execOutsideUI = UIThreadManager.instance.&executeOutside
     /** True if the current thread is the UI thread */
     def isUIThread = UIThreadManager.instance.&isUIThread
     /** Schedules a block of code as a Future */
